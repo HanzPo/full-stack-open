@@ -65,6 +65,14 @@ const App = () => {
       .then((returnedObject) => setPersons(persons.concat(returnedObject)));
   };
 
+  const removePerson = (id) => {
+    if (window.confirm(`Delete ${persons.find(person => person.id === id).name}?`)) {
+      phonebookService.remove(id);
+
+      setPersons(persons.filter(person => person.id != id));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -83,7 +91,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} removePerson={removePerson} />
     </div>
   );
 };
