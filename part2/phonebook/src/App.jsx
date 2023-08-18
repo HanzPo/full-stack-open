@@ -59,7 +59,9 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(personObject));
+    axios
+      .post("http://localhost:3002/persons", personObject)
+      .then((response) => setPersons(persons.concat(response.data)));
   };
 
   return (
