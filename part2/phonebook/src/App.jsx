@@ -39,16 +39,20 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
     let exists = false;
+    let replace = false;
+    let replaceId = null;
 
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     };
 
     persons.forEach((person) => {
       if (JSON.stringify(person.name) === JSON.stringify(personObject.name)) {
-        alert(`${newName} is already added to phonebook`);
+        replace = window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        );
+        replaceId = person.id;
         exists = true;
       }
     });
@@ -56,7 +60,19 @@ const App = () => {
     setNewName("");
     setNewNumber("");
 
-    if (exists === true) {
+    if (exists) {
+      if (replace) {
+        phonebookService
+          .update(replaceId, personObject)
+          .then((returnedObject) =>
+            setPersons(
+              persons.map((person) =>
+                person.id === replaceId ? returnedObject : person
+              )
+            )
+          );
+      }
+
       return;
     }
 
@@ -66,10 +82,14 @@ const App = () => {
   };
 
   const removePerson = (id) => {
-    if (window.confirm(`Delete ${persons.find(person => person.id === id).name}?`)) {
+    if (
+      window.confirm(
+        `Delete ${persons.find((person) => person.id === id).name}?`
+      )
+    ) {
       phonebookService.remove(id);
 
-      setPersons(persons.filter(person => person.id != id));
+      setPersons(persons.filter((person) => person.id != id));
     }
   };
 
