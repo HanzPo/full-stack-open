@@ -6,12 +6,15 @@ import phonebookService from "./services/phonebook";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     phonebookService.getAll().then((phoneNumbers) => setPersons(phoneNumbers));
@@ -71,6 +74,9 @@ const App = () => {
               )
             )
           );
+
+        setSuccessMessage(`Updated ${personObject.name}`);
+        setTimeout(() => setSuccessMessage(null), 5000);
       }
 
       return;
@@ -79,6 +85,9 @@ const App = () => {
     phonebookService
       .create(personObject)
       .then((returnedObject) => setPersons(persons.concat(returnedObject)));
+
+    setSuccessMessage(`Added ${personObject.name}`);
+    setTimeout(() => setSuccessMessage(null), 5000);
   };
 
   const removePerson = (id) => {
@@ -96,6 +105,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={successMessage} type="success" />
+      <Notification message={errorMessage} type="error" />
 
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
 
