@@ -96,7 +96,14 @@ const App = () => {
         `Delete ${persons.find((person) => person.id === id).name}?`
       )
     ) {
-      phonebookService.remove(id);
+      phonebookService.remove(id).catch(() => {
+        setErrorMessage(
+          `Information of ${
+            persons.find((person) => person.id === id).name
+          } has already been removed from server`
+        );
+        setTimeout(() => setErrorMessage(null), 5000);
+      });
 
       setPersons(persons.filter((person) => person.id != id));
     }
