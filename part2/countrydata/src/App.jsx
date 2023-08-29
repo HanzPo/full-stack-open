@@ -7,6 +7,7 @@ import CountryView from "./components/CountryView";
 const App = () => {
   const [query, setQuery] = useState("");
   const [names, setNames] = useState([]);
+  const [showCountry, setShowCountry] = useState(false);
 
   const namesToShow = names.filter((country) =>
     country.toLowerCase().includes(query.toLowerCase())
@@ -20,6 +21,7 @@ const App = () => {
 
   const handleQueryChange = (event) => {
     setQuery(event.target.value);
+    setShowCountry(false);
   };
 
   return (
@@ -27,7 +29,7 @@ const App = () => {
       <div>
         find countries <input value={query} onChange={handleQueryChange} />
         
-        <CountryView names={namesToShow} query={query} />
+        <CountryView names={namesToShow} query={query} showCountry={showCountry} setShowCountry={setShowCountry}/>
       </div>
     </>
   );
