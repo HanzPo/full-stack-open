@@ -1,4 +1,5 @@
 import countriesService from "../services/countries";
+import WeatherInfo from "./WeatherInfo";
 import { useState, useEffect } from "react";
 
 const CountryInfo = ({ countryName }) => {
@@ -23,11 +24,16 @@ const CountryInfo = ({ countryName }) => {
           ))}
         </ul>
         <img src={selectedCountry.flags.png} />
+        <WeatherInfo
+          capitalName={selectedCountry.capital[0]}
+          capitalLat={selectedCountry.capitalInfo.latlng[0]}
+          capitalLng={selectedCountry.capitalInfo.latlng[1]}
+        />
       </>
     );
   }
 
-  return <div>Loading...</div>;
+  return <div>Loading country data...</div>;
 };
 
 export default CountryInfo;
