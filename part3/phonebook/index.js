@@ -31,15 +31,16 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-
   const options = {
-    timeZoneName: "long"
-  }
-  
-  response.send(`Phonebook has info for ${persons.length} people<br/>${new Date(Date.now()).toLocaleString("en-CA", options)}`);
+    timeZoneName: "long",
+  };
+
+  response.send(
+    `Phonebook has info for ${persons.length} people<br/>${new Date(
+      Date.now()
+    ).toLocaleString("en-CA", options)}`
+  );
 });
-
-
 
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
@@ -52,6 +53,14 @@ app.get("/api/persons/:id", (request, response) => {
     response.statusMessage = "No Person";
     response.status(404).end();
   }
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+
+  persons = persons.filter((person) => person.id !== id);
+
+  response.status(204).end();
 });
 
 const PORT = 3002;
