@@ -23,11 +23,20 @@ let persons = [
     id: 4,
     name: "Mary Poppendieck",
     number: "39-23-6423122",
-  }
+  },
 ];
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
+});
+
+app.get("/info", (request, response) => {
+
+  const options = {
+    timeZoneName: "long"
+  }
+
+  response.send(`Phonebook has info for ${persons.length} people<br/>${new Date(Date.now()).toLocaleString("en-CA", options)}`);
 });
 
 const PORT = 3002;
