@@ -7,7 +7,18 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(express.json());
-app.use(morgan("tiny"));
+
+morgan.token("data", (request, response) => {
+  if (request.method === "POST") {
+    return JSON.stringify(request.body);
+  }
+
+  return "";
+});
+
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :data")
+);
 
 let persons = [
   {
