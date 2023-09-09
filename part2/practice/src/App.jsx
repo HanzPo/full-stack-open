@@ -13,7 +13,7 @@ const Footer = () => {
     <div style={footerStyle}>
       <br />
       <em>
-        Note app, Department of Computer Science, University of Helsinki 2023
+        Hanz Po's note app for University of Helsinki Full Stack Open course
       </em>
     </div>
   );
