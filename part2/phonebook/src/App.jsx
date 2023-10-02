@@ -84,10 +84,16 @@ const App = () => {
 
     phonebookService
       .create(personObject)
-      .then((returnedObject) => setPersons(persons.concat(returnedObject)));
-
-    setSuccessMessage(`Added ${personObject.name}`);
-    setTimeout(() => setSuccessMessage(null), 5000);
+      .then((returnedObject) => {
+        setPersons(persons.concat(returnedObject));
+        setSuccessMessage(`Added ${personObject.name}`);
+        setTimeout(() => setSuccessMessage(null), 5000);
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => setErrorMessage(null), 5000);
+      });
   };
 
   const removePerson = (id) => {

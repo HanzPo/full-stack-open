@@ -15,6 +15,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if ((error.name = "ValidationError")) {
+    return response.status(403).json({ error: error.message });
   }
 
   next(error);
@@ -36,7 +38,7 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :data")
 );
 
-app.get("/api/persons", (request, response) => {
+app.get("/api/persons", (request, response, next) => {
   Person.find({})
     .then((persons) => {
       response.json(persons);
@@ -60,7 +62,7 @@ app.get("/info", (request, response) => {
   });
 });
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   Person.findById(request.params.id)
     .then((result) => {
       if (result) {
@@ -72,7 +74,7 @@ app.get("/api/persons/:id", (request, response) => {
     .catch((error) => next(error));
 });
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
   if (!body.name) {
@@ -98,7 +100,7 @@ app.post("/api/persons", (request, response) => {
       response.json(result);
     })
     .catch((error) => {
-      return response.status(500).json({ error: error });
+      next(error);
     });
 });
 
