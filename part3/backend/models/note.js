@@ -7,7 +7,7 @@ console.log("Connecting to", url);
 mongoose
   .connect(url)
   .then((result) => {
-    console.log("connected to MongoDB");
+    console.log("connected to MongoDB", result);
   })
   .catch((error) => {
     console.log("error connecting to MongoDB:", error.message);
@@ -16,10 +16,10 @@ mongoose.set("strictQuery", false);
 
 const noteSchema = new mongoose.Schema({
   content: {
-      type: String,
-      minLength: 5,
-      required: true
-    },
+    type: String,
+    minLength: 5,
+    required: true
+  },
   important: Boolean,
 });
 
